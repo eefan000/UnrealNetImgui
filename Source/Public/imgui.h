@@ -522,6 +522,21 @@ namespace ImGui
     IMGUI_API void          BulletTextV(const char* fmt, va_list args)                      IM_FMTLIST(1);
     IMGUI_API void          SeparatorText(const char* label);                               // currently: formatted text with an horizontal line
 
+    IMGUI_API void          TextUnformatted(const char8_t* text, const char8_t* text_end = NULL); // raw text without formatting. Roughly equivalent to Text("%s", text) but: A) doesn't require null terminated string if 'text_end' is specified, B) it's faster, no memory copy is done, no buffer size limits, recommended for long chunks of text.
+    IMGUI_API void          Text(const char8_t* fmt, ...)                                      IM_FMTARGS(1); // formatted text
+    IMGUI_API void          TextV(const char8_t* fmt, va_list args)                            IM_FMTLIST(1);
+    IMGUI_API void          TextColored(const ImVec4& col, const char8_t* fmt, ...)            IM_FMTARGS(2); // shortcut for PushStyleColor(ImGuiCol_Text, col); Text(fmt, ...); PopStyleColor();
+    IMGUI_API void          TextColoredV(const ImVec4& col, const char8_t* fmt, va_list args)  IM_FMTLIST(2);
+    IMGUI_API void          TextDisabled(const char8_t* fmt, ...)                              IM_FMTARGS(1); // shortcut for PushStyleColor(ImGuiCol_Text, style.Colors[ImGuiCol_TextDisabled]); Text(fmt, ...); PopStyleColor();
+    IMGUI_API void          TextDisabledV(const char8_t* fmt, va_list args)                    IM_FMTLIST(1);
+    IMGUI_API void          TextWrapped(const char8_t* fmt, ...)                               IM_FMTARGS(1); // shortcut for PushTextWrapPos(0.0f); Text(fmt, ...); PopTextWrapPos();. Note that this won't work on an auto-resizing window if there's no other widgets to extend the window width, yoy may need to set a size using SetNextWindowSize().
+    IMGUI_API void          TextWrappedV(const char8_t* fmt, va_list args)                     IM_FMTLIST(1);
+    IMGUI_API void          LabelText(const char8_t* label, const char8_t* fmt, ...)          IM_FMTARGS(2); // display text+label aligned the same way as value+label widgets
+    IMGUI_API void          LabelTextV(const char8_t* label, const char8_t* fmt, va_list args)IM_FMTLIST(2);
+    IMGUI_API void          BulletText(const char8_t* fmt, ...)                                IM_FMTARGS(1); // shortcut for Bullet()+Text()
+    IMGUI_API void          BulletTextV(const char8_t* fmt, va_list args)                      IM_FMTLIST(1);
+    IMGUI_API void          SeparatorText(const char8_t* label);                             // currently: formatted text with an horizontal line
+    
     // Widgets: Main
     // - Most widgets return true when the value has been changed or when pressed/selected
     // - You may also use one of the many IsItemXXX functions (e.g. IsItemActive, IsItemHovered, etc.) to query widget state.
@@ -537,6 +552,17 @@ namespace ImGui
     IMGUI_API void          ProgressBar(float fraction, const ImVec2& size_arg = ImVec2(-FLT_MIN, 0), const char* overlay = NULL);
     IMGUI_API void          Bullet();                                                       // draw a small circle + keep the cursor on the same line. advance cursor x position by GetTreeNodeToLabelSpacing(), same distance that TreeNode() uses
 
+    IMGUI_API bool          Button(const char8_t* label, const ImVec2& size = ImVec2(0, 0));   // button
+    IMGUI_API bool          SmallButton(const char8_t* label);                                 // button with (FramePadding.y == 0) to easily embed within text
+    IMGUI_API bool          InvisibleButton(const char8_t* str_id, const ImVec2& size, ImGuiButtonFlags flags = 0); // flexible button behavior without the visuals, frequently useful to build custom behaviors using the public api (along with IsItemActive, IsItemHovered, etc.)
+    IMGUI_API bool          ArrowButton(const char8_t* str_id, ImGuiDir dir);                  // square button with an arrow shape
+    IMGUI_API bool          Checkbox(const char8_t* label, bool* v);
+    IMGUI_API bool          CheckboxFlags(const char8_t* label, int* flags, int flags_value);
+    IMGUI_API bool          CheckboxFlags(const char8_t* label, unsigned int* flags, unsigned int flags_value);
+    IMGUI_API bool          RadioButton(const char8_t* label, bool active);                    // use with e.g. if (RadioButton("one", my_value==1)) { my_value = 1; }
+    IMGUI_API bool          RadioButton(const char8_t* label, int* v, int v_button);           // shortcut to handle the above pattern when value is an integer
+    IMGUI_API void          ProgressBar(float fraction, const char8_t* overlay, const ImVec2& size_arg = ImVec2(-FLT_MIN, 0));
+    
     // Widgets: Images
     // - Read about ImTextureID here: https://github.com/ocornut/imgui/wiki/Image-Loading-and-Displaying-Examples
     // - Note that ImageButton() adds style.FramePadding*2.0f to provided size. This is in order to facilitate fitting an image in a button.

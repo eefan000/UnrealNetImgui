@@ -258,12 +258,22 @@ void ImGui::TextUnformatted(const char* text, const char* text_end)
     TextEx(text, text_end, ImGuiTextFlags_NoWidthForLargeClippedText);
 }
 
+void ImGui::TextUnformatted(const char8_t* text, const char8_t* text_end)
+{
+    TextUnformatted(reinterpret_cast<const char*>(text), reinterpret_cast<const char*>(text_end));
+}
+
 void ImGui::Text(const char* fmt, ...)
 {
     va_list args;
     va_start(args, fmt);
     TextV(fmt, args);
     va_end(args);
+}
+
+void ImGui::Text(const char8_t* fmt, ...)
+{
+    Text(reinterpret_cast<const char*>(fmt));
 }
 
 void ImGui::TextV(const char* fmt, va_list args)
@@ -277,6 +287,11 @@ void ImGui::TextV(const char* fmt, va_list args)
     TextEx(text, text_end, ImGuiTextFlags_NoWidthForLargeClippedText);
 }
 
+void ImGui::TextV(const char8_t* fmt, va_list args)
+{
+    TextV(reinterpret_cast<const char*>(fmt), args);
+}
+
 void ImGui::TextColored(const ImVec4& col, const char* fmt, ...)
 {
     va_list args;
@@ -285,11 +300,21 @@ void ImGui::TextColored(const ImVec4& col, const char* fmt, ...)
     va_end(args);
 }
 
+void ImGui::TextColored(const ImVec4& col, const char8_t* fmt, ...)
+{
+    TextColored(col, reinterpret_cast<const char*>(fmt));
+}
+
 void ImGui::TextColoredV(const ImVec4& col, const char* fmt, va_list args)
 {
     PushStyleColor(ImGuiCol_Text, col);
     TextV(fmt, args);
     PopStyleColor();
+}
+
+void ImGui::TextColoredV(const ImVec4& col, const char8_t* fmt, va_list args)
+{
+    TextColoredV(col, reinterpret_cast<const char*>(fmt), args);
 }
 
 void ImGui::TextDisabled(const char* fmt, ...)
@@ -300,6 +325,11 @@ void ImGui::TextDisabled(const char* fmt, ...)
     va_end(args);
 }
 
+void ImGui::TextDisabled(const char8_t* fmt, ...)
+{
+    TextDisabled(reinterpret_cast<const char*>(fmt));
+}
+
 void ImGui::TextDisabledV(const char* fmt, va_list args)
 {
     ImGuiContext& g = *GImGui;
@@ -308,12 +338,22 @@ void ImGui::TextDisabledV(const char* fmt, va_list args)
     PopStyleColor();
 }
 
+void ImGui::TextDisabledV(const char8_t* fmt, va_list args)
+{
+    TextDisabledV(reinterpret_cast<const char*>(fmt), args);
+}
+
 void ImGui::TextWrapped(const char* fmt, ...)
 {
     va_list args;
     va_start(args, fmt);
     TextWrappedV(fmt, args);
     va_end(args);
+}
+
+void ImGui::TextWrapped(const char8_t* fmt, ...)
+{
+    TextWrapped(reinterpret_cast<const char*>(fmt));
 }
 
 void ImGui::TextWrappedV(const char* fmt, va_list args)
@@ -327,12 +367,22 @@ void ImGui::TextWrappedV(const char* fmt, va_list args)
         PopTextWrapPos();
 }
 
+void ImGui::TextWrappedV(const char8_t* fmt, va_list args)
+{
+    TextWrappedV(reinterpret_cast<const char*>(fmt), args);
+}
+
 void ImGui::LabelText(const char* label, const char* fmt, ...)
 {
     va_list args;
     va_start(args, fmt);
     LabelTextV(label, fmt, args);
     va_end(args);
+}
+
+void ImGui::LabelText(const char8_t* label, const char8_t* fmt, ...)
+{
+    LabelText(reinterpret_cast<const char*>(label), reinterpret_cast<const char*>(fmt));
 }
 
 // Add a label+text combo aligned to other label+value widgets
@@ -364,12 +414,22 @@ void ImGui::LabelTextV(const char* label, const char* fmt, va_list args)
         RenderText(ImVec2(value_bb.Max.x + style.ItemInnerSpacing.x, value_bb.Min.y + style.FramePadding.y), label);
 }
 
+void ImGui::LabelTextV(const char8_t* label, const char8_t* fmt, va_list args)
+{
+    LabelTextV(reinterpret_cast<const char*>(label), reinterpret_cast<const char*>(fmt), args);
+}
+
 void ImGui::BulletText(const char* fmt, ...)
 {
     va_list args;
     va_start(args, fmt);
     BulletTextV(fmt, args);
     va_end(args);
+}
+
+void ImGui::BulletText(const char8_t* fmt, ...)
+{
+    BulletText(reinterpret_cast<const char*>(fmt));
 }
 
 // Text with a little bullet aligned to the typical tree node.
@@ -397,6 +457,11 @@ void ImGui::BulletTextV(const char* fmt, va_list args)
     ImU32 text_col = GetColorU32(ImGuiCol_Text);
     RenderBullet(window->DrawList, bb.Min + ImVec2(style.FramePadding.x + g.FontSize * 0.5f, g.FontSize * 0.5f), text_col);
     RenderText(bb.Min + ImVec2(g.FontSize + style.FramePadding.x * 2, 0.0f), text_begin, text_end, false);
+}
+
+void ImGui::BulletTextV(const char8_t* fmt, va_list args)
+{
+    BulletTextV(reinterpret_cast<const char*>(fmt), args);
 }
 
 //-------------------------------------------------------------------------
@@ -725,6 +790,11 @@ bool ImGui::Button(const char* label, const ImVec2& size_arg)
     return ButtonEx(label, size_arg, ImGuiButtonFlags_None);
 }
 
+bool ImGui::Button(const char8_t* label, const ImVec2& size_arg)
+{
+    return Button(reinterpret_cast<const char*>(label), size_arg);
+}
+
 // Small buttons fits within text without additional vertical spacing.
 bool ImGui::SmallButton(const char* label)
 {
@@ -734,6 +804,11 @@ bool ImGui::SmallButton(const char* label)
     bool pressed = ButtonEx(label, ImVec2(0, 0), ImGuiButtonFlags_AlignTextBaseLine);
     g.Style.FramePadding.y = backup_padding_y;
     return pressed;
+}
+
+bool ImGui::SmallButton(const char8_t* label)
+{
+    return SmallButton(reinterpret_cast<const char*>(label));
 }
 
 // Tip: use ImGui::PushID()/PopID() to push indices or pointers in the ID stack.
@@ -760,6 +835,11 @@ bool ImGui::InvisibleButton(const char* str_id, const ImVec2& size_arg, ImGuiBut
 
     IMGUI_TEST_ENGINE_ITEM_INFO(id, str_id, g.LastItemData.StatusFlags);
     return pressed;
+}
+
+bool ImGui::InvisibleButton(const char8_t* str_id, const ImVec2& size_arg, ImGuiButtonFlags flags)
+{
+    return InvisibleButton(reinterpret_cast<const char*>(str_id), size_arg, flags);
 }
 
 bool ImGui::ArrowButtonEx(const char* str_id, ImGuiDir dir, ImVec2 size, ImGuiButtonFlags flags)
@@ -794,6 +874,11 @@ bool ImGui::ArrowButton(const char* str_id, ImGuiDir dir)
 {
     float sz = GetFrameHeight();
     return ArrowButtonEx(str_id, dir, ImVec2(sz, sz), ImGuiButtonFlags_None);
+}
+
+bool ImGui::ArrowButton(const char8_t* str_id, ImGuiDir dir)
+{
+    return ArrowButton(reinterpret_cast<const char*>(str_id), dir);
 }
 
 // Button to close a window
@@ -1160,6 +1245,11 @@ bool ImGui::Checkbox(const char* label, bool* v)
     return pressed;
 }
 
+bool ImGui::Checkbox(const char8_t* label, bool* v)
+{
+    return Checkbox(reinterpret_cast<const char*>(label), v);
+}
+
 template<typename T>
 bool ImGui::CheckboxFlagsT(const char* label, T* flags, T flags_value)
 {
@@ -1192,9 +1282,19 @@ bool ImGui::CheckboxFlags(const char* label, int* flags, int flags_value)
     return CheckboxFlagsT(label, flags, flags_value);
 }
 
+bool ImGui::CheckboxFlags(const char8_t* label, int* flags, int flags_value)
+{
+    return CheckboxFlags(reinterpret_cast<const char*>(label), flags, flags_value);
+}
+
 bool ImGui::CheckboxFlags(const char* label, unsigned int* flags, unsigned int flags_value)
 {
     return CheckboxFlagsT(label, flags, flags_value);
+}
+
+bool ImGui::CheckboxFlags(const char8_t* label, unsigned int* flags, unsigned int flags_value)
+{
+    return CheckboxFlags(reinterpret_cast<const char*>(label), flags, flags_value);
 }
 
 bool ImGui::CheckboxFlags(const char* label, ImS64* flags, ImS64 flags_value)
@@ -1261,6 +1361,11 @@ bool ImGui::RadioButton(const char* label, bool active)
     return pressed;
 }
 
+bool ImGui::RadioButton(const char8_t* label, bool active)
+{
+    return RadioButton(reinterpret_cast<const char*>(label), active);
+}
+
 // FIXME: This would work nicely if it was a public template, e.g. 'template<T> RadioButton(const char* label, T* v, T v_button)', but I'm not sure how we would expose it..
 bool ImGui::RadioButton(const char* label, int* v, int v_button)
 {
@@ -1268,6 +1373,11 @@ bool ImGui::RadioButton(const char* label, int* v, int v_button)
     if (pressed)
         *v = v_button;
     return pressed;
+}
+
+bool ImGui::RadioButton(const char8_t* label, int* v, int v_button)
+{
+    return RadioButton(reinterpret_cast<const char*>(label), v, v_button);
 }
 
 // size_arg (for each axis) < 0.0f: align to end, 0.0f: auto, > 0.0f: specified size
@@ -1305,6 +1415,11 @@ void ImGui::ProgressBar(float fraction, const ImVec2& size_arg, const char* over
     ImVec2 overlay_size = CalcTextSize(overlay, NULL);
     if (overlay_size.x > 0.0f)
         RenderTextClipped(ImVec2(ImClamp(fill_br.x + style.ItemSpacing.x, bb.Min.x, bb.Max.x - overlay_size.x - style.ItemInnerSpacing.x), bb.Min.y), bb.Max, overlay, NULL, &overlay_size, ImVec2(0.0f, 0.5f), &bb);
+}
+
+void ImGui::ProgressBar(float fraction, const char8_t* overlay, const ImVec2& size_arg)
+{
+    return ProgressBar(fraction, size_arg, reinterpret_cast<const char*>(overlay));
 }
 
 void ImGui::Bullet()
@@ -1538,6 +1653,11 @@ void ImGui::SeparatorText(const char* label)
     // Otherwise, we can decide that users wanting to drag this would layout a dedicated drag-item,
     // and then we can turn this into a format function.
     SeparatorTextEx(0, label, FindRenderedTextEnd(label), 0.0f);
+}
+
+void ImGui::SeparatorText(const char8_t* label)
+{
+    SeparatorText(reinterpret_cast<const char*>(label));
 }
 
 // Using 'hover_visibility_delay' allows us to hide the highlight and mouse cursor for a short time, which can be convenient to reduce visual noise.
